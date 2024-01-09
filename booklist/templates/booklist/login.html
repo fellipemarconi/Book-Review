@@ -1,0 +1,17 @@
+{% extends "global/base.html" %}
+{% block content %}
+    <h1 class="text-center">Login</h1>
+    <hr>
+    <form action="{% url "booklist:index" %}" method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">User</label>
+            <input type="text" name="user" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="Password" name="password" class="form-control" required>
+        </div>
+        <button class="btn btn-primary" type="submit">Sign In</button>
+    </form>
+{% endblock content %}
