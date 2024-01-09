@@ -35,8 +35,15 @@ def logout_user(request):
 def register_user(request):
     form = RegisterForm()
     
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'User has been created')
+            return redirect('booklist:login')
+        
     context = {
-        'form': form
+        'form': form,
     }
     
     return render(request, 'booklist/register.html', context)
