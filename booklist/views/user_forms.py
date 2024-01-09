@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import auth, messages
-from booklist.forms import RegisterForm
+from booklist.forms import RegisterForm, RegisterUpdateForm
 # Create your views here.
 
 def login_user(request):
@@ -47,3 +47,24 @@ def register_user(request):
     }
     
     return render(request, 'booklist/register.html', context)
+
+def profile(request):
+    form = RegisterUpdateForm(instance=request.user)
+    
+    if request.method == 'POST':
+        form = RegisterUpdateForm(data=request.POST, instance=request.user)
+        
+        context = {
+            'form': form,
+        }
+        
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'User has been updated')
+            return redirect('booklist:login')
+    
+    context = {
+            'form': form,
+        }
+    
+    return render(request, 'booklist/user_update.html', context)
