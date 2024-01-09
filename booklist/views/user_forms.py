@@ -49,6 +49,9 @@ def register_user(request):
     return render(request, 'booklist/register.html', context)
 
 def profile(request):
+    if not request.user.is_authenticated:
+        return redirect('booklist:login')
+    
     form = RegisterUpdateForm(instance=request.user)
     
     if request.method == 'POST':
