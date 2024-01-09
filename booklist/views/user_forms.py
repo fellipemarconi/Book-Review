@@ -31,3 +31,6 @@ def logout_user(request):
     auth.logout(request)
     messages.success(request, 'Logout Successful!')
     return redirect('booklist:login')
+
+def register_user(request):
+    return render(request, 'booklist/register.html')
