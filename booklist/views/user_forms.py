@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import auth, messages
-
+from booklist.forms import RegisterForm
 # Create your views here.
 
 def login_user(request):
@@ -33,4 +33,10 @@ def logout_user(request):
     return redirect('booklist:login')
 
 def register_user(request):
-    return render(request, 'booklist/register.html')
+    form = RegisterForm()
+    
+    context = {
+        'form': form
+    }
+    
+    return render(request, 'booklist/register.html', context)
