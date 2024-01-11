@@ -5,6 +5,7 @@ app_name = 'booklist'
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('search/', views.search, name='search'),
     
     #user
     path('user/login/', views.login_user, name='login'),
