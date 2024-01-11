@@ -11,8 +11,8 @@
             </tr>
         </thead>
         <tbody>
-            {% if books %}
-                {% for book in books %}
+            {% if page_obj %}
+                {% for book in page_obj %}
                     <tr>
                         <td>{{ book.title }}</td>
                         <td>{{ book.genre }}</td>
