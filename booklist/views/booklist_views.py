@@ -1,6 +1,13 @@
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+from booklist.models import Book
+
 # Create your views here.
 
 def index(request):
-    return render(request, 'booklist/index.html')
+    books = Book.objects.all().order_by('title')
+    
+    context = {
+        'books': books,
+    }
+    
+    return render(request, 'booklist/index.html', context)
