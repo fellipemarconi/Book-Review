@@ -39,6 +39,7 @@
                 </div>
             </form>
             <a href="{% url "booklist:index" %}" class="btn btn-secondary">Back</a>
+            <a href="{% url "booklist:update" book.id %}" class="btn btn-primary">Edit</a>
         </div>
 {% endblock content %}
     
