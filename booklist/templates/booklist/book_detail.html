@@ -3,7 +3,7 @@
     <h1 class="text-center">Book</h1>
     <hr>
         <div class="col-md-6 offset-md-3">
-            <div class="card mb-3" style="max-width: 540px;">
+            <div class="card mb-4" style="max-width: 600px;">
                 <div class="row g-0">
                     <div class="col-md-4">
                         <img src="{{ book.picture.url }}" class="img-fluid rounded-start" alt="{{ book.title }}">
@@ -17,6 +17,27 @@
                     </div>
                 </div>
             </div>
+            <form action="{% url "booklist:book" book.id %}" method="post">
+                {% csrf_token %}
+                <div class="card mb-4" style="max-width: 600px;">
+                    <div class="card-body">
+                    <p>Type your note, and hit enter to add it</p>
+        
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex flex-row align-items-center">
+                        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="avatar" width="25"
+                            height="25" />
+                        <p class="small mb-0 ms-2">{{user.username}}</p>
+                        </div>
+                        <div class="d-flex flex-row align-items-center">
+                        <p class="small text-muted mb-0">Upvote?</p>
+                        <i class="far fa-thumbs-up mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
+                        <p class="small text-muted mb-0">3</p>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </form>
             <a href="{% url "booklist:index" %}" class="btn btn-secondary">Back</a>
         </div>
 {% endblock content %}
