@@ -8,7 +8,7 @@ class Book(models.Model):
     year = models.IntegerField()
     genre = models.CharField(max_length=30)
     author = models.CharField(max_length=50, null=True)
-    picture = models.ImageField(null=True, blank=True, upload_to='pictures/%Y/%m/')
+    picture = models.ImageField(null=True, upload_to='pictures/%Y/%m/')
     
     def __str__(self):
         return f"{self.title}"
