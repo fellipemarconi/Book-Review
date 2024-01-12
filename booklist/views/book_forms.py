@@ -16,7 +16,9 @@ def book_create(request):
         }
         
         if form.is_valid:
-            book = form.save()
+            book = form.save(commit=False)
+            book.owner = request.user
+            book.save()
             messages.success(request, 'Book has been created')
             return redirect('booklist:book', book_id=book.pk)
     
@@ -32,7 +34,7 @@ def book_update(request, book_id):
     if not request.user.is_authenticated:
         return redirect('booklist:login')
     
-    book = get_object_or_404(Book, pk=book_id)
+    book = get_object_or_404(Book, pk=book_id, owner=request.user)
     form_action = reverse('booklist:update', args=(book_id,))
     
     if request.method == 'POST':
@@ -63,7 +65,7 @@ def book_delete(request, book_id):
     if not request.user.is_authenticated:
         return redirect('booklist:login')
     
-    book = get_object_or_404(Book, pk=book_id)
+    book = get_object_or_404(Book, pk=book_id, owner=request.user)
     
     confirmation = request.POST.get('confirmation', 'no')
     
