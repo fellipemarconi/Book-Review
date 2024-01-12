@@ -19,7 +19,7 @@
             {% endif %}
             <div>
                 {% if field.name == 'picture' and field.value.url %}
-                    <img src="{{ field.value.url }}" alt="">
+                    <img src="{{ field.value.url }}" alt="{{ book.title }}" height="360" width="220">
                 {% endif %}
             </div>
         {% endfor %}

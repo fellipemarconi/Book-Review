@@ -60,4 +60,21 @@ def book_update(request, book_id):
     return render(request, 'booklist/book_update.html', context)
 
 def book_delete(request, book_id):
-    return render(request, 'booklist/login.html')
+    if not request.user.is_authenticated:
+        return redirect('booklist:login')
+    
+    book = get_object_or_404(Book, pk=book_id)
+    
+    confirmation = request.POST.get('confirmation', 'no')
+    
+    if confirmation == 'yes':
+        book.delete()
+        messages.error(request, 'Book has been deleted')
+        return redirect('booklist:index')
+    
+    context = {
+        'book': book,
+        'confirmation': confirmation
+    }
+    
+    return render(request, 'booklist/book_detail.html', context)
