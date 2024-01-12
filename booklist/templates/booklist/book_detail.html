@@ -2,6 +2,15 @@
 {% block content %}
     <h2 class="text-center">{{ book.title }}</h2>
     <hr>
-    
+    <div class="col-md-6 offset-md-3">
+        <div class="card-body text-center">
+            <h5 class="card-title">{{ book.genre }}, Year {{ book.year }}</h5>
+            <p>{{ book.description }}</p>
+            <hr>
+        </div>
+        <br>
+        <a href="{% url "booklist:index" %}" class="btn btn-secondary">Back</a>
+    </div>
+
 {% endblock content %}
     
