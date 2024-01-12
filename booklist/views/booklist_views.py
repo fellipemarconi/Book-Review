@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from booklist.models import Book
 from django.core.paginator import Paginator
 from django.db.models import Q
+from booklist.models import Book
 
 # Create your views here.
 
@@ -40,3 +41,17 @@ def search(request):
     }
     
     return render(request, 'booklist/index.html', context)
+
+def book_detail(request, book_id):
+    single_book = get_object_or_404(
+        Book.objects, pk=book_id
+    )
+    
+    book_name = single_book.title
+    
+    context = {
+        'book': single_book,
+        'site_title': book_name,
+    }
+    
+    return render(request, 'booklist/book_detail.html', context)

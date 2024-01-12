@@ -14,7 +14,7 @@
             {% if page_obj %}
                 {% for book in page_obj %}
                     <tr>
-                        <td>{{ book.title }}</td>
+                        <td><a href="{% url "booklist:book" book.id %}">{{ book.title }}</a></td>
                         <td>{{ book.genre }}</td>
                         <td>{{ book.year }}</td>
                     </tr>
