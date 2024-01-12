@@ -8,7 +8,9 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     
     # book (CRUD)
-    path('book/<int:book_id>', views.book_detail, name='book'),
+    path('book/<int:book_id>/', views.book_detail, name='book'),
+    path('book/create/', views.book_create, name='create'),
+    path('book/delete/<int:book_id>/', views.book_delete, name='delete'),
     
     #user
     path('user/login/', views.login_user, name='login'),

@@ -1,0 +1,30 @@
+{% extends "global/base.html" %}
+{% block content %}
+    <h2 class="text-center">Create Book</h2>
+    <hr>
+    <form action="{% url "booklist:create" %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+            <div>
+                <label for="{{ field.id_for_label}}">{{ field.label }}:</label>
+                {{ field }}
+                <span style="color: #cc0000;">
+                    {{ field.errors }}
+                </span>
+
+            </div>
+
+            {% if field.help_text %}
+                <label class="form-text text-muted">{{ field.help_text }}</label>
+            {% endif %}
+            <div>
+                {% if field.name == 'picture' and field.value.url %}
+                    <img src="{{ field.value.url }}" alt="">
+                {% endif %}
+            </div>
+        {% endfor %}
+        <br>
+        <br>
+        <button type="submit" class="btn btn-primary">Add</button>
+    </form>
+{% endblock content %}

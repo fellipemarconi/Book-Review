@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth import password_validation
+from booklist.models import Book
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(
@@ -161,3 +162,47 @@ class RegisterUpdateForm(forms.ModelForm):
                 self.add_error('password1', ValidationError(errors))
                 
         return password1
+    
+class BookForm(forms.ModelForm):
+    title = forms.CharField(
+        required=True,
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'}
+        )
+    )
+    description = forms.CharField(
+        required=True,
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'}
+        )
+    )
+    author = forms.CharField(
+        required=True,
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'}
+        )
+    )
+    genre = forms.CharField(
+        required=True,
+        widget=forms.TextInput(
+            attrs={'class': 'form-control'}
+        )
+    )
+    year = forms.IntegerField(
+        required=True,
+        widget=forms.NumberInput(
+            attrs={'class': 'form-control'}
+        )
+    )
+    picture = forms.FileField(
+        required=True,
+        widget=forms.FileInput(
+            attrs={'accept': 'image/*', 'class': 'form-control'}
+        )
+    )
+    class Meta:
+        model = Book
+        fields = (
+            'title', 'author', 'genre',
+            'year', 'description', 'picture',
+        )
