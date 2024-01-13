@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import auth, messages
 from booklist.forms import RegisterForm, RegisterUpdateForm
+from django.contrib.auth.models import User
 # Create your views here.
 
 def login_user(request):
@@ -71,3 +72,25 @@ def profile(request):
         }
     
     return render(request, 'booklist/user_update.html', context)
+
+def user_delete(request, pk):
+    if not request.user.is_authenticated:
+        return redirect('booklist:login')
+    
+    user = get_object_or_404(User, pk=pk)
+    confirmation = request.POST.get('confirmation', 'no')
+    form = RegisterUpdateForm(instance=request.user)
+        
+    if confirmation == 'yes':
+        user.delete()
+        messages.success(request, 'User has been deleted')
+        return redirect('booklist:index')
+        
+    context = {
+        'confirmation': confirmation,
+        'user': user,
+        'form': form,
+    }
+    
+    return render(request, 'booklist/user_update.html', context)
+    

@@ -22,4 +22,13 @@
         <br>
         <button type="submit" class="btn btn-primary">Update</button>
     </form>
+    <form action="{% url "booklist:user_delete" user.pk %}" method="POST">
+        {% csrf_token %}
+        {% if confirmation == 'no' %}
+            <input type="hidden" name="confirmation" value="yes">
+            <button type="submit" class="btn btn-danger">Confirm?</button>
+        {% else %}
+            <button type="submit" class="btn btn-danger">Delete</button>
+        {% endif %}
+    </form>
 {% endblock content %}
