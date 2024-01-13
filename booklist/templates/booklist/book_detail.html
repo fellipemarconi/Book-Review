@@ -24,6 +24,12 @@
                 {% for comment in book.comments.all %}
                     <div class="card mb-4" style="max-width: 600px;">
                         <div class="card-body">
+                            <div class="text-end">
+                                <form action="{% url "booklist:comment" comment.id %}" method="POST">
+                                    {% csrf_token %}
+                                    <button class="btn btn-link btn-danger" type="submit"></button>
+                                </form>
+                            </div>
                         <p>{{comment.body}}</p>
                         <div class="d-flex justify-content-between">
                             <div class="d-flex flex-row align-items-center">

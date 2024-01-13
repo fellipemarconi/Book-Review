@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from booklist.forms import CommentForm
 from datetime import datetime
+from django.contrib import messages
 
 # Create your views here.
 
@@ -74,3 +75,14 @@ def book_detail(request, book_id):
     }
     
     return render(request, 'booklist/book_detail.html', context)
+
+def delete_comment(request, comment_pk):
+    comment = get_object_or_404(Comment, id=comment_pk)
+    book_id = comment.book.pk
+    
+    if request.method == 'POST':
+        comment.delete()
+        messages.success(request, 'Comment has been deleted')
+        return redirect('booklist:book', book_id=book_id)
+    
+    return render(request, 'booklist/book.html')
