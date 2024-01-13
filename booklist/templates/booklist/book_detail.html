@@ -17,6 +17,10 @@
                     </div>
                 </div>
             </div>
+            {% if not book.comments.all %}
+                No Comments Yet...
+            {% else %}
+            {% endif %}
             <form action="{% url "booklist:book" book.id %}" method="post">
                 {% csrf_token %}
                 <div class="card mb-4" style="max-width: 600px;">

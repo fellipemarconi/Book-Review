@@ -10,3 +10,5 @@ class BookAdmin(admin.ModelAdmin):
     search_fields = ('id', 'title', 'genre', 'year',)
     list_per_page = 25
     list_max_show_all = 100
+
+admin.site.register(models.Comment)
