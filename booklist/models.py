@@ -22,6 +22,9 @@ class Comment(models.Model):
     name = models.CharField(max_length=50)
     body = models.TextField()
     data_added = models.DateTimeField(auto_now_add=True)
+    owner = models.ForeignKey(
+        User, on_delete=models.SET_NULL, blank=True, null=True
+    )
     
     def __str__(self):
         return '%s - %s' % (self.book.title, self.name)
