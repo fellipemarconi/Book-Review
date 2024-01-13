@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from booklist.models import Book
+from booklist.models import Book, Comment
 from django.core.paginator import Paginator
 from django.db.models import Q
+from booklist.forms import CommentForm
+from datetime import datetime
 
 # Create your views here.
 
@@ -45,12 +47,30 @@ def book_detail(request, book_id):
     single_book = get_object_or_404(
         Book.objects, pk=book_id
     )
-    
     book_name = single_book.title
     
+    if request.method == 'POST':
+        form = CommentForm(request.POST, instance=single_book)
+        
+        context = {
+            'book': single_book,
+            'site_title': book_name,
+            'form': form,
+        }
+
+        if form.is_valid():
+            name = request.user.username
+            body = form.cleaned_data['body']
+            comment = Comment(book=single_book, name=name, body=body, data_added=datetime.now())
+            comment.save()
+            return redirect('booklist:book', book_id=book_id)
+    
+        return render(request, 'booklist/book_detail.html', context)
+        
     context = {
-        'book': single_book,
-        'site_title': book_name,
+    'book': single_book,
+    'site_title': book_name,
+    'form': CommentForm(),
     }
     
     return render(request, 'booklist/book_detail.html', context)

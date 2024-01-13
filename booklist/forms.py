@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth import password_validation
-from booklist.models import Book
+from booklist.models import Book, Comment
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(
@@ -205,4 +205,20 @@ class BookForm(forms.ModelForm):
         fields = (
             'title', 'author', 'genre',
             'year', 'description', 'picture',
+        )
+        
+class CommentForm(forms.ModelForm):
+    body = forms.CharField(
+        max_length=1500,
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Type your note here...'
+            }
+        )
+    )
+    class Meta:
+        model = Comment
+        fields = (
+            'body',
         )

@@ -18,30 +18,46 @@
                 </div>
             </div>
             {% if not book.comments.all %}
-                No Comments Yet...
+            <p class="text-center">No Comments Yet...</p>
             {% else %}
+            <p class="text-center">Comments</p>
+                {% for comment in book.comments.all %}
+                    <div class="card mb-4" style="max-width: 600px;">
+                        <div class="card-body">
+                        <p>{{comment.body}}</p>
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex flex-row align-items-center">
+                            <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="avatar" width="25"
+                                height="25" />
+                            <p class="small mb-0 ms-2">{{comment.name}}</p>
+                            </div>
+                            <div class="d-flex flex-row align-items-center">
+                            <p class="small text-muted mb-0">{{comment.data_added|date:"d/m/Y"}}</p>
+                            <i class="far fa-thumbs-up mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                {% endfor %}
             {% endif %}
-            <form action="{% url "booklist:book" book.id %}" method="post">
-                {% csrf_token %}
-                <div class="card mb-4" style="max-width: 600px;">
-                    <div class="card-body">
-                    <p>Type your note, and hit enter to add it</p>
-        
-                    <div class="d-flex justify-content-between">
-                        <div class="d-flex flex-row align-items-center">
-                        <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" alt="avatar" width="25"
-                            height="25" />
-                        <p class="small mb-0 ms-2">{{user.username}}</p>
+            {% if user.is_authenticated %}
+                <form action="{% url "booklist:book" book.id %}" method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="card mb-4" style="max-width: 600px;">
+                            <div class="card-body">
+                                <p>{{ field }}</p>
+                            </div>
+                            </div>
+                    {% endfor %}
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex flex-row align-items-center"></div>
+                            <div class="d-flex flex-row align-items-center">
+                                <button class="btn btn-primary btn-sm" type="submit">Comment</button>
+                            </div>
                         </div>
-                        <div class="d-flex flex-row align-items-center">
-                        <p class="small text-muted mb-0">Upvote?</p>
-                        <i class="far fa-thumbs-up mx-2 fa-xs text-black" style="margin-top: -0.16rem;"></i>
-                        <p class="small text-muted mb-0">3</p>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-            </form>
+                </form>
+            {% endif %}
             {% if user == book.owner %}
                 <form action="{% url "booklist:delete" book.id %}" method="POST">
                     <a href="{% url "booklist:index" %}" class="btn btn-secondary">Back</a>
