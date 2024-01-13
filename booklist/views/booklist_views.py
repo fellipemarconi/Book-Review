@@ -62,7 +62,7 @@ def book_detail(request, book_id):
         if form.is_valid():
             name = request.user.username
             body = form.cleaned_data['body']
-            comment = Comment(book=single_book, name=name, body=body, data_added=datetime.now())
+            comment = Comment(book=single_book, name=name, body=body, owner=request.user, data_added=datetime.now())
             comment.save()
             return redirect('booklist:book', book_id=book_id)
     
@@ -77,7 +77,10 @@ def book_detail(request, book_id):
     return render(request, 'booklist/book_detail.html', context)
 
 def delete_comment(request, comment_pk):
-    comment = get_object_or_404(Comment, id=comment_pk)
+    if not request.user.is_authenticated:
+        return redirect('booklist:login')
+    
+    comment = get_object_or_404(Comment, id=comment_pk, owner=request.user)
     book_id = comment.book.pk
     
     if request.method == 'POST':
@@ -85,4 +88,8 @@ def delete_comment(request, comment_pk):
         messages.success(request, 'Comment has been deleted')
         return redirect('booklist:book', book_id=book_id)
     
-    return render(request, 'booklist/book.html')
+    context = {
+        'comment': comment,
+    }
+    
+    return render(request, 'booklist/book.html', context)

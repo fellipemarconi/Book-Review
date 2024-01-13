@@ -27,12 +27,14 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <p>{{comment.body}}</p>
                                 <div class="d-flex">
-                                    <form action="{% url "booklist:comment" comment.id %}" method="POST">
-                                        {% csrf_token %}
-                                        <button class="btn btn-link" type="submit">
-                                            <i class="fas fa-trash text-danger" style="font-size: 14px;"></i>
-                                        </button>
-                                    </form>
+                                    {% if user == comment.owner %}
+                                        <form action="{% url "booklist:comment" comment.id %}" method="POST">
+                                            {% csrf_token %}
+                                            <button class="btn btn-link" type="submit">
+                                                <i class="fas fa-trash text-danger" style="font-size: 14px;"></i>
+                                            </button>
+                                        </form>
+                                    {% endif %}
                                 </div>
                             </div>                          
                         <div class="d-flex justify-content-between">
