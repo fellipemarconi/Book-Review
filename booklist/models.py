@@ -1,6 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+# variables
+RATING = (
+    (1, "★☆☆☆☆"),
+    (2, "★★☆☆☆"),
+    (3, "★★★☆☆"),
+    (4, "★★★★☆"),
+    (5, "★★★★★"),
+)
+
 # Create your models here.
 class Book(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -28,3 +37,20 @@ class Comment(models.Model):
     
     def __str__(self):
         return '%s - %s' % (self.book.title, self.name)
+    
+class BookReview(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True
+    )
+    book = models.ForeignKey(
+        Book, on_delete=models.SET_NULL, null=True
+    )
+    rating = models.IntegerField(
+        choices=RATING, default=None
+    )
+    
+    def __str__(self):
+        return self.rating
+    
+    def get_rating(self):
+        return self.rating
