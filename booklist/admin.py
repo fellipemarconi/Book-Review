@@ -12,3 +12,4 @@ class BookAdmin(admin.ModelAdmin):
     list_max_show_all = 100
 
 admin.site.register(models.Comment)
+admin.site.register(models.BookReview)

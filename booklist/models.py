@@ -50,7 +50,7 @@ class BookReview(models.Model):
     )
     
     def __str__(self):
-        return self.rating
+        return self.book.title #type: ignore
     
     def get_rating(self):
         return self.rating
