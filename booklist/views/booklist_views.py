@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from booklist.models import Book, Comment
+from booklist.models import Book, Comment, BookReview
 from django.core.paginator import Paginator
 from django.db.models import Q
-from booklist.forms import CommentForm
+from booklist.forms import CommentForm, BookReviewForm
 from datetime import datetime
 from django.contrib import messages
+from django.db.models import Avg
 
 # Create your views here.
 
@@ -50,13 +51,27 @@ def book_detail(request, book_id):
     )
     book_name = single_book.title
     
+    # Rating
+    rating = BookReview.objects.filter(
+        book=single_book
+    )
+    
+    average_rating = BookReview.objects.filter(
+        book=single_book
+    ).aggregate(rating=Avg('rating'))
+    
+    # Comments
     if request.method == 'POST':
         form = CommentForm(request.POST, instance=single_book)
+        form_rating = BookReviewForm(request.POST)
         
         context = {
             'book': single_book,
             'site_title': book_name,
             'form': form,
+            'form': form_rating,
+            'rating': rating,
+            'average_rating': average_rating,
         }
 
         if form.is_valid():
@@ -65,6 +80,13 @@ def book_detail(request, book_id):
             comment = Comment(book=single_book, name=name, body=body, owner=request.user, data_added=datetime.now())
             comment.save()
             return redirect('booklist:book', book_id=book_id)
+        
+        if form_rating.is_valid():
+            user = request.user
+            star_rating = form_rating.cleaned_data['rating']
+            add_rating = BookReview(user=user, book=single_book, rating=star_rating)
+            add_rating.save()
+            return redirect('booklist:book', book_id=book_id)
     
         return render(request, 'booklist/book_detail.html', context)
         
@@ -72,6 +94,9 @@ def book_detail(request, book_id):
     'book': single_book,
     'site_title': book_name,
     'form': CommentForm(),
+    'form_rating': BookReviewForm(),
+    'rating': rating,
+    'average_rating': average_rating,
     }
     
     return render(request, 'booklist/book_detail.html', context)

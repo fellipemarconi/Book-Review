@@ -6,16 +6,33 @@
             <div class="card mb-4" style="max-width: 600px;">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img src="{{ book.picture.url }}" class="img-fluid rounded-start" alt="{{ book.title }}">
+                        <img style="height: 325px; width: 300px;" src="{{ book.picture.url }}" class="img-fluid rounded-start" alt="{{ book.title }}">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
                         <h5 class="card-title">{{book.title}}</h5>
                         <p class="card-text"><small class="text-muted">{{book.author}}, {{book.genre}}, {{book.year}}</small></p>
                         <p class="card-text">{{book.description}}</p>
+                        <br>
+                        <br>
+                        <br>
+                        {% if rating %}
+                            <p><span class="text-center" style="color: #ffff00;">★</span> {{ average_rating.rating|floatformat:1 }} out of 5.0</p>
+                        {% else %}
+                        <p>0 out of 5.0</p>
+                        {% endif %}
                         </div>
                     </div>
                 </div>
+                {% if user.is_authenticated %}
+                    <form action="{% url "booklist:book" book.id %}" method="post">
+                        {% csrf_token %}
+                        {% for field in form_rating %}
+                            <p>{{ field }}</p>
+                        {% endfor %}
+                            <button class="btn btn-primary btn-sm" type="submit">Rate</button>
+                    </form>
+                {% endif %}
             </div>
             {% if not book.comments.all %}
             <p class="text-center">No Comments Yet...</p>

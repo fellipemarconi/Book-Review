@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth import password_validation
-from booklist.models import Book, Comment
+from booklist.models import Book, Comment, BookReview
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(
@@ -222,3 +222,8 @@ class CommentForm(forms.ModelForm):
         fields = (
             'body',
         )
+        
+class BookReviewForm(forms.ModelForm):
+    class Meta:
+        model = BookReview
+        fields = ('rating',)

@@ -11,5 +11,11 @@ class BookAdmin(admin.ModelAdmin):
     list_per_page = 25
     list_max_show_all = 100
 
+@admin.register(models.BookReview)
+class BookReviewAdmin(admin.ModelAdmin):
+    list_display = ('user', 'book', 'rating')
+    ordering = '-id',
+    list_per_page = 25
+    list_max_show_all = 100
+    
 admin.site.register(models.Comment)
-admin.site.register(models.BookReview)
